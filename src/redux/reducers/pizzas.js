@@ -1,0 +1,12 @@
+const defaultState = {
+    pizzas: []
+}
+
+export const pizzas = (state = defaultState, action) => {
+    switch (action.type) {
+        case 'GET_PIZZAS':
+            return { ...state, pizzas: [...action.payload] }
+        default:
+            return state
+    }
+}

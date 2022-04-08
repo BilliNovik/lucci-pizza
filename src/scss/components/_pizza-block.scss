@@ -49,6 +49,12 @@
           border-radius: 5px;
           cursor: auto;
         }
+
+        &.disabled {
+          color: #a2a7a5;
+          cursor: auto;
+          pointer-events: none
+        }
       }
     }
   }

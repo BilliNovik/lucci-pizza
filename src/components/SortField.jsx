@@ -1,11 +1,37 @@
+import classNames from 'classnames'
 import React from 'react'
 
-function SortField() {
-    return (
+function SortField({ sortItems }) {
+    const [isShow, setIsShow] = React.useState(false)
+    const [activeSort, setActiveSort] = React.useState(0)
+    const sortRef = React.useRef();
 
-        <div className="sort">
+    const closePopup = (id) => {
+        setActiveSort(id)
+        setIsShow(false)
+    }
+
+    const handleClickOutside = (e) => {
+        const path = e.path || (e.composedPath && e.composedPath());
+        if (!path.includes(sortRef.current)) {
+            setIsShow(false)
+            console.log(e.path)
+        }
+    }
+
+    React.useEffect(() => {
+        if (isShow) {
+            document.addEventListener('click', handleClickOutside)
+            return () => {
+                document.removeEventListener('click', handleClickOutside)
+            }
+        }
+    }, [isShow])
+
+    return (
+        <div className="sort" ref={sortRef}>
             <div className="sort__label">
-                <svg
+                <svg className={classNames({ 'active': isShow })}
                     width="10"
                     height="6"
                     viewBox="0 0 10 6"
@@ -18,15 +44,16 @@ function SortField() {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span>популярности</span>
+                <span onClick={() => setIsShow(!isShow)}>{sortItems[activeSort].text}</span>
             </div>
-            <div className="sort__popup">
+            {isShow && <div className="sort__popup">
                 <ul>
-                    <li className="active">популярности</li>
-                    <li>цене</li>
-                    <li>алфавиту</li>
+                    {sortItems.map((sort, i) => (
+                        <li key={i} className={classNames({ 'active': activeSort === sort.id })}
+                            onClick={() => closePopup(sort.id)}>{sort.text}</li>
+                    ))}
                 </ul>
-            </div>
+            </div>}
         </div>
     )
 }

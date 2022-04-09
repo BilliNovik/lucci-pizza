@@ -10,7 +10,7 @@ function Categories({ categoryItems }) {
                 <li onClick={() => setActiveCategory(null)} className={classNames({ 'active': (activeCategory === null) })}>Все</li>
                 {
                     categoryItems.map((item, i) => (
-                        <li onClick={() => { setActiveCategory(item.category) }}
+                        <li key={i} onClick={() => { setActiveCategory(item.category) }}
                             className={classNames({ 'active': (activeCategory === item.category) })}>{item.text}</li>
                     ))
                 }

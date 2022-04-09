@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import Categories from '../components/Categories'
 import PizzaCard from '../components/PizzaCard'
 import SortField from '../components/SortField'
-import { fetchPizzas } from '../redux/actions/pizzas'
+import { fetchPizzas, setIsLoading } from '../redux/actions/pizzas'
+import PizzaCardLoader from '../components/PizzaCardLoader'
 
 function Main() {
     const dispatch = useDispatch();
-    const pizzas = useSelector(state => state.pizzas.pizzas)
+    const pizzas = useSelector(state => state.pizzas.pizzas);
+    const isLoading = useSelector(state => state.pizzas.isLoading);
     const sortItems = [
         { id: 0, value: 'rating', text: 'популярности' },
         { id: 1, value: 'price', text: 'цене' },
@@ -24,7 +26,13 @@ function Main() {
 
     React.useEffect(() => {
         dispatch(fetchPizzas())
-    }, [dispatch])
+    }, [])
+
+    React.useEffect(() => {
+        if (pizzas.length) {
+            dispatch(setIsLoading(false));
+        }
+    }, [pizzas]);
 
     return (
 
@@ -36,9 +44,14 @@ function Main() {
                 </div>
                 <h2 className="content__title">Все пиццы</h2>
                 <div className="content__items">
-                    {pizzas && pizzas.map((pizza) => (
-                        <PizzaCard key={pizza.id} {...pizza} />
-                    ))}
+                    {isLoading ?
+                        Array(12).fill(0).map((_, index) => <PizzaCardLoader key={index} />)
+                        :
+                        pizzas && pizzas.map((pizza) => (
+                            <PizzaCard key={pizza.id} {...pizza} />
+                        ))
+                    }
+
                 </div>
             </div>
         </div>

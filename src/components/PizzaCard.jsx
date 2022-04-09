@@ -8,7 +8,6 @@ function PizzaCard({ name, imageUrl, price, sizes, types }) {
     const [pizzaType, setPizzaType] = React.useState(defaultTypes[types[0]].id)
     const [pizzaSize, setPizzaSize] = React.useState(sizes[0])
 
-
     return (
         <div className="pizza-block">
             <img

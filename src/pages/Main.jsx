@@ -6,6 +6,7 @@ import PizzaCard from '../components/PizzaCard'
 import SortField from '../components/SortField'
 import { fetchPizzas, setIsLoading } from '../redux/actions/pizzas'
 import PizzaCardLoader from '../components/PizzaCardLoader'
+import { addCartItem } from '../redux/actions/cart'
 
 function Main() {
     const dispatch = useDispatch();
@@ -34,6 +35,10 @@ function Main() {
         }
     }, [pizzas]);
 
+    const addPizzaInCart = (obj) => {
+        dispatch(addCartItem(obj))
+    }
+
     return (
 
         <div className="content">
@@ -48,7 +53,7 @@ function Main() {
                         Array(12).fill(0).map((_, index) => <PizzaCardLoader key={index} />)
                         :
                         pizzas && pizzas.map((pizza) => (
-                            <PizzaCard key={pizza.id} {...pizza} />
+                            <PizzaCard key={pizza.id} {...pizza} addPizzaInCart={addPizzaInCart} />
                         ))
                     }
 

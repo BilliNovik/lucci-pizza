@@ -1,12 +1,26 @@
 import classNames from 'classnames'
 import React from 'react'
 
-function PizzaCard({ name, imageUrl, price, sizes, types }) {
+function PizzaCard({ name, imageUrl, price, sizes, types, addPizzaInCart }) {
 
     const defaultTypes = [{ id: 0, type: 'тонкое' }, { id: 1, type: 'традиционное' }]
     const defaultSizes = [26, 30, 40]
     const [pizzaType, setPizzaType] = React.useState(defaultTypes[types[0]].id)
     const [pizzaSize, setPizzaSize] = React.useState(sizes[0])
+    const [pizzaPrice, setPizzaPrice] = React.useState(price)
+
+    const exportObjInCart = {
+        name,
+        imageUrl,
+        pizzaPrice,
+        pizzaType,
+        pizzaSize,
+        pizzaCount: 1,
+    }
+
+    React.useEffect(() => {
+        console.log('render');
+    }, [])
 
     return (
         <div className="pizza-block">
@@ -31,8 +45,8 @@ function PizzaCard({ name, imageUrl, price, sizes, types }) {
                 </ul>
             </div>
             <div className="pizza-block__bottom">
-                <div className="pizza-block__price">от {price} ₽</div>
-                <div className="button button--outline button--add">
+                <div className="pizza-block__price">{pizzaPrice} ₽</div>
+                <div className="button button--outline button--add" onClick={() => addPizzaInCart(exportObjInCart)}>
                     <svg
                         width="12"
                         height="12"

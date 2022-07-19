@@ -1,3 +1,5 @@
+import produce from "immer"
+
 const defaultState = {
     cart: [],
     cartItemsCount: 0,
@@ -5,19 +7,35 @@ const defaultState = {
 }
 
 export const cart = (state = defaultState, action) => {
-
     switch (action.type) {
         case 'ADD_CART_ITEM':
+            return produce(state, draft => {
 
-            let newCart = [...state.cart, action.payload]
-            let price = newCart.reduce((sum, el) => { return sum + el.pizzaPrice }, 0)
+                // console.log(action.payload.name);
+                // console.log(state.cart);
+                // state.cart && state.cart.forEach(item => {
+                //     if (action.payload.name == item.name) console.log('f')
+                // })
 
-            return {
-                ...state,
-                cart: newCart,
-                cartItemsCount: newCart.length,
-                cartPrice: price,
-            }
+                draft.cart.push(action.payload)
+                draft.cartPrice = draft.cart.reduce((sum, el) => { return sum + el.pizzaPrice }, 0)
+                draft.cartItemsCount = draft.cart.length
+            })
+
+        case 'ADD_CART_ITEM':
+            return produce(state, draft => {
+
+                // console.log(action.payload.name);
+                // console.log(state.cart);
+                // state.cart && state.cart.forEach(item => {
+                //     if (action.payload.name == item.name) console.log('f')
+                // })
+
+                draft.cart.push(action.payload)
+                draft.cartPrice = draft.cart.reduce((sum, el) => { return sum + el.pizzaPrice }, 0)
+                draft.cartItemsCount = draft.cart.length
+            })
+
         default:
             return state
     }

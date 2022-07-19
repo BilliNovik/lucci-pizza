@@ -18,10 +18,6 @@ function PizzaCard({ name, imageUrl, price, sizes, types, addPizzaInCart }) {
         pizzaCount: 1,
     }
 
-    React.useEffect(() => {
-        console.log('render');
-    }, [])
-
     return (
         <div className="pizza-block">
             <img

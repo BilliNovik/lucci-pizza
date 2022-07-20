@@ -10,8 +10,8 @@ import { addCartItem } from '../redux/actions/cart'
 
 function Main() {
     const dispatch = useDispatch();
-    const pizzas = useSelector(state => state.pizzas.pizzas);
-    const isLoading = useSelector(state => state.pizzas.isLoading);
+    const { pizzas, isLoading } = useSelector(state => state.pizzas);
+
     const sortItems = [
         { id: 0, value: 'rating', text: 'популярности' },
         { id: 1, value: 'price', text: 'цене' },

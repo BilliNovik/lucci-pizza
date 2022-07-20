@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 function PizzaCard({ name, imageUrl, price, sizes, types, addPizzaInCart }) {
 
@@ -8,6 +9,7 @@ function PizzaCard({ name, imageUrl, price, sizes, types, addPizzaInCart }) {
     const [pizzaType, setPizzaType] = React.useState(defaultTypes[types[0]].id)
     const [pizzaSize, setPizzaSize] = React.useState(sizes[0])
     const [pizzaPrice, setPizzaPrice] = React.useState(price)
+    const pizzaItemInCart = useSelector(state => state.cart.cart).find(item => item.name === name)
 
     const exportObjInCart = {
         name,
@@ -15,7 +17,7 @@ function PizzaCard({ name, imageUrl, price, sizes, types, addPizzaInCart }) {
         pizzaPrice,
         pizzaType,
         pizzaSize,
-        pizzaCount: 1,
+        pizzaCount: 0,
     }
 
     return (
@@ -56,7 +58,7 @@ function PizzaCard({ name, imageUrl, price, sizes, types, addPizzaInCart }) {
                         />
                     </svg>
                     <span>Добавить</span>
-                    <i>2</i>
+                    {pizzaItemInCart && <i>{pizzaItemInCart.pizzaCount}</i>}
                 </div>
             </div>
         </div >

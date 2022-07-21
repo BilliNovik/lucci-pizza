@@ -1,10 +1,34 @@
 import classNames from 'classnames'
 import React from 'react'
+import axios from 'axios'
+import { useDispatch } from 'react-redux'
 
-function SortField({ sortItems }) {
+import { setPizzas } from '../redux/actions/pizzas'
+
+const sortItems = [
+    { id: 0, value: 'rating', text: 'популярности' },
+    { id: 1, value: 'price', text: 'цене' },
+    { id: 2, value: 'name', text: 'алфавиту' },
+]
+
+function SortField() {
     const [isShow, setIsShow] = React.useState(false)
     const [activeSort, setActiveSort] = React.useState(0)
     const sortRef = React.useRef();
+    const [orderType, setOrderType] = React.useState(true)
+    // true === desc, false === incr
+
+    const dispatch = useDispatch()
+
+    React.useEffect(() => {
+
+        const decOrInc = orderType ? 'desc' : 'incr'
+        const type = sortItems[activeSort].value
+
+        axios.get(`https://62d937e65d893b27b2e0cf08.mockapi.io/lucci-pizza/pizzas?&sortBy=${type}&order=${decOrInc}`)
+            .then(({ data }) => dispatch(setPizzas(data)))
+
+    }, [activeSort, orderType])
 
     const closePopup = (id) => {
         setActiveSort(id)
@@ -31,7 +55,7 @@ function SortField({ sortItems }) {
     return (
         <div className="sort" ref={sortRef}>
             <div className="sort__label">
-                <svg className={classNames({ 'active': isShow })}
+                <svg className={classNames({ 'active': orderType })} onClick={() => setOrderType(!orderType)}
                     width="10"
                     height="6"
                     viewBox="0 0 10 6"
@@ -46,15 +70,17 @@ function SortField({ sortItems }) {
                 <b>Сортировка по:</b>
                 <span onClick={() => setIsShow(!isShow)}>{sortItems[activeSort].text}</span>
             </div>
-            {isShow && <div className="sort__popup">
-                <ul>
-                    {sortItems.map((sort, i) => (
-                        <li key={i} className={classNames({ 'active': activeSort === sort.id })}
-                            onClick={() => closePopup(sort.id)}>{sort.text}</li>
-                    ))}
-                </ul>
-            </div>}
-        </div>
+            {
+                isShow && <div className="sort__popup">
+                    <ul>
+                        {sortItems.map((sort, i) => (
+                            <li key={i} className={classNames({ 'active': activeSort === sort.id })}
+                                onClick={() => closePopup(sort.id)}>{sort.text}</li>
+                        ))}
+                    </ul>
+                </div>
+            }
+        </div >
     )
 }
 

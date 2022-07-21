@@ -21,7 +21,9 @@ function Main() {
     const { pizzas, isLoading } = useSelector(state => state.pizzas);
 
     React.useEffect(() => {
-        dispatch(fetchPizzas())
+        if (!window.location.search) {
+            dispatch(fetchPizzas())
+        }
     }, [])
 
     React.useEffect(() => {

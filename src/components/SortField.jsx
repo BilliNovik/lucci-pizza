@@ -2,8 +2,10 @@ import classNames from 'classnames'
 import React from 'react'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
+import qs from 'qs'
+import { useNavigate } from 'react-router-dom'
 
-import { setPizzas } from '../redux/actions/pizzas'
+import { setPizzas, fetchPizzasByParams } from '../redux/actions/pizzas'
 
 const sortItems = [
     { id: 0, value: 'rating', text: 'популярности' },
@@ -15,20 +17,43 @@ function SortField() {
     const [isShow, setIsShow] = React.useState(false)
     const [activeSort, setActiveSort] = React.useState(0)
     const sortRef = React.useRef();
+    const isMounted = React.useRef(false);
     const [orderType, setOrderType] = React.useState(true)
     // true === desc, false === incr
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     React.useEffect(() => {
 
         const decOrInc = orderType ? 'desc' : 'incr'
         const type = sortItems[activeSort].value
 
+        if (isMounted.current) {
+            const queryString = qs.stringify({
+                sortBy: type,
+                order: decOrInc
+            })
+            navigate(`?${queryString}`)
+        }
+        isMounted.current = true
+
         axios.get(`https://62d937e65d893b27b2e0cf08.mockapi.io/lucci-pizza/pizzas?&sortBy=${type}&order=${decOrInc}`)
             .then(({ data }) => dispatch(setPizzas(data)))
 
     }, [activeSort, orderType])
+
+    React.useEffect(() => {
+        if (window.location.search) {
+            const params = qs.parse(window.location.search.substring(1))
+            console.log(params)
+
+            dispatch(fetchPizzasByParams(params))
+            setOrderType(params.order === 'desc' ? true : false)
+            setActiveSort(sortItems.find(el => el.value === params.sortBy).id)
+        }
+
+    }, [])
 
     const closePopup = (id) => {
         setActiveSort(id)
@@ -39,7 +64,6 @@ function SortField() {
         const path = e.path || (e.composedPath && e.composedPath());
         if (!path.includes(sortRef.current)) {
             setIsShow(false)
-            console.log(e.path)
         }
     }
 

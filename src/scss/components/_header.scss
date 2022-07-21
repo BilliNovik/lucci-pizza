@@ -30,3 +30,14 @@
     }
   }
 }
+
+@media screen and (max-width: 650px) {
+  .header {
+    padding-bottom: 5px;
+
+    .container {
+      flex-direction: column;
+    }
+  }
+
+}

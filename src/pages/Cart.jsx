@@ -37,7 +37,7 @@ function Cart() {
                             <span>Очистить корзину</span>
                         </div>
                     </div>
-                    <div className="content__items">
+                    <div className="cart__items">
                         {
                             cartElems.map((item, i) => (
                                 <CartItem key={Math.random()} {...item} />

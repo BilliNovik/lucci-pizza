@@ -29,9 +29,8 @@ i {
   }
 
   &__items {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr))
   }
 
   &__top {
@@ -60,6 +59,11 @@ i {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: column;
   }
 
   .content__title {
@@ -155,7 +159,7 @@ i {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 13%;
+      width: 110px;
 
       &-minus {
         svg {
@@ -316,6 +320,117 @@ i {
       margin: 0 auto;
       font-weight: 600;
       font-size: 18px;
+    }
+  }
+}
+
+
+@media screen and (max-width: 1300px) {
+  .content {
+
+    &__top {
+      overflow: scroll;
+    }
+  }
+
+}
+
+@media screen and (max-width: 800px) {
+  .wrapper {
+    width: calc(100vw - 30px);
+  }
+
+  .container {
+    width: 96%;
+
+    &--cart {
+      margin: 90px 15px;
+    }
+  }
+
+  .cart {
+    &__item {
+      &-img {
+        display: none;
+      }
+    }
+
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .cart {
+    &--empty {
+      width: 100%;
+
+      p {
+        font-size: 15px;
+      }
+    }
+
+    &__top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-direction: column;
+    }
+
+    &__item {
+      flex-wrap: wrap;
+      position: relative;
+
+      &-info {
+        padding-bottom: 11px;
+        width: 100%;
+      }
+
+      &-count {
+        width: 100%;
+
+        b {
+          font-size: 20px;
+        }
+
+      }
+
+      &-remove {
+        position: absolute;
+        right: 0;
+        top: 25px;
+      }
+
+      &-price {
+        width: 100%;
+        padding-top: 5px;
+
+        b {
+
+          font-size: 27px;
+        }
+      }
+    }
+
+    &__bottom {
+      &-details {
+        flex-direction: column;
+      }
+
+      &-buttons {
+        flex-direction: column;
+        gap: 10px;
+
+        .button {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .container {
+    width: 96%;
+
+    &--cart {
+      margin: 40px auto;
     }
   }
 }

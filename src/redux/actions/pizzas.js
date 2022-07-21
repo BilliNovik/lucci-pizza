@@ -2,7 +2,7 @@ import axios from "axios"
 
 export const fetchPizzas = () => {
     return (dispatch) => {
-        axios.get('http://localhost:3100/pizzas')
+        axios.get('https://62d937e65d893b27b2e0cf08.mockapi.io/lucci-pizza/pizzas')
             .then(({ data }) => (dispatch(setPizzas(data))))
     }
 }
